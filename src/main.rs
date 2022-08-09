@@ -1,6 +1,6 @@
 extern crate eframe;
 
-use eframe::egui::{self, RichText};
+use eframe::egui::{self, RichText, containers};
 use egui::{vec2, Vec2};
 
 fn main() {
@@ -46,11 +46,13 @@ impl eframe::App for TodoApp {
 
                 ui.heading("Hello World!"); // Hello world text
 
-                for i in 0..self.buttons.len() {
-                    if ui.button(self.buttons[i].as_str()).clicked() {
-                        self.add_button(); // On click, add button
+                containers::ScrollArea::vertical().show(ui, |ui| {
+                    for i in 0..self.buttons.len() {
+                        if ui.button(self.buttons[i].as_str()).clicked() {
+                            self.add_button(); // On click, add button
+                        }
                     }
-                }
+                });
             });
     }
 }
@@ -61,9 +63,6 @@ fn custom_window(
     title: &str,
     add_contents: impl FnOnce(&mut egui::Ui),
 ) {
-    //COME BACK HERE TO CONTINUE IMPLEMENTATION
-    //https://github.com/emilk/egui/blob/master/examples/custom_window_frame/src/main.rs
-
     use egui::{emath::Align2, Stroke, Button, Id, Sense};
     use eframe::epaint::{Rect};
 
@@ -71,7 +70,7 @@ fn custom_window(
     let height = 28.0; // Height of title bar
 
     // Central panel holder
-    egui::CentralPanel::default()
+    containers::CentralPanel::default()
         .frame(egui::Frame::none())
         .show(ctx, |ui| {
             // Util variables
